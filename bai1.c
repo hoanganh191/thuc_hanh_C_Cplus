@@ -15,7 +15,7 @@ int main() {
     printf("4:%10.3f %10d\n",x,b);
     printf("5:%-5d %f\n",a,x); //%-5d nghĩa là in ra kết quả ở những vị trí đầu và đằng sau là khoảng trống
     printf("6:%*d\n",b,b); // ký tự * này dùng để lấy giá trị đầu tiên sau dấu ',' tương đương là số ô vị trí là b
-    printf("7:%*.*f\n",12,5,x);
+    printf("7:%*.*f\n",12,5,x); //* đàu nhận giá trị là 12; * sau nhận 5 => có nghĩa là kết quả in ra gồm 12 ô ( tính cả 5 vị trí sau dấu . và dấu .)
     printf("8:%x :%8x :\n",a,a); //%x nghĩa là chuyển sang hệ thập lục phân
     printf("9:%o :%8o :\n",a,a); //%o nghĩa là xuất ra số nguyên dưới dạng bát phân
     getch();
