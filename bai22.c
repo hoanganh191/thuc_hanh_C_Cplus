@@ -3,44 +3,40 @@ quy tắc này youtube có nhé*/
 #include <stdio.h>
 #include <math.h>
 void doi_nhi_phan(int n){
+    int so_nhi_phan = 0;
     int luu1[100]; //mảng này tớ lưu giá trị các phần dư khi %2
     int dem1 = 0; //Biến này để đếm xem có bao nhiêu phần dư để dùng vòng lặp
     /*Vòng lặp này chạy đến khi phần nguyên / 2 bằng 0 
     (Do tớ giảm biến n sau lần nên hiểu n ở đây là phần nguyên sau khi chia)*/
-    while (n / 2 > 0) 
+    while (n > 0) //Tớ thay điều kiện lặp này so với code cũ vì nó tối ưu hơn
     {
+        luu1[dem1] = n%2; //Mảng này lưu giá trị từ vị trí 0
         dem1++;
-        luu1[dem1] = n%2; //Mảng này lưu giá trị từ vị trí 1 nhé do cái biến đếm tớ thiết lập
         n = n/2;
     }
-    //Vì vòng lặp trên chạy đến khi phần nguyên lớn > 0 thì dừng nên tớ xét thêm trường hợp phần nguyên cuối cùng = 0
-    dem1++;
-    luu1[dem1] = n%2;
-    printf("Ket qua cua phep doi la: ");
-    for (int i = dem1; i > 0; i--) //Vòng lặp này để in ra kết quả 
+    for (int i = 0; i < dem1; i++) //Vòng lặp này để tính ra số nhị phân 
     {
-        printf("%d",luu1[i]);
+        so_nhi_phan = so_nhi_phan + luu1[i]*pow(10,i);
     }
+    printf("Ket qua cua phep doi la: %d",so_nhi_phan);
 }
 
 void doi_thap_phan(int m){
     int luu2[100]; //Lưu giá trị của các chữ số của số nhị phân
     int dem2 = 0; //Biến đếm
-    int ketqua = 0 ;//Tính kết quả
-    while (m / 10 > 0 ) //Vòng lặp này chạy đến khi phần nguyên / 10 > 0 false thì dừng
+    int so_thap_phan = 0 ;//Tính kết quả
+    while (m  > 0 ) //Vòng lặp này chạy đến khi phần nguyên > 0 false thì dừng
     {
-        dem2++;
         luu2[dem2] = m%10; //lưu giá trị các chữ số ( nhớ cái mảng này lưu giá trị số từ phải qua trái)
+        dem2++;
         m = m / 10;
     }
-    //Xét nốt trường hợp phần nguyên = 0 
-    dem2++;
-    luu2[dem2] = m%10;
+   
     for (int j = 0; j < dem2; j++)
     {
-        ketqua = ketqua + pow(2,j)*luu2[j+1]; //Công thức nha cậu, cái chỉ số [j + 1] do tớ thiết lập từ giá trị = 1 ở mảng luu2
+        so_thap_phan = so_thap_phan + pow(2,j)*luu2[j]; 
     }
-    printf("Ket qua cua phep doi la: %d",ketqua);
+    printf("Ket qua cua phep doi la: %d",so_thap_phan);
     
 }
 int main(){
