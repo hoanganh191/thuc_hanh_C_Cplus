@@ -31,12 +31,12 @@ void demTu_Max(char a[100]){
 	
 	//Tìm từ có ký tự dài nhất
 	int kichThuoc[soTu]; //Các giá trị trong mảng chính là số lượng ký tự ứng với từng từ
-	for(int i = 0; i <= soTu; i++){
+	for(int i = 0; i < soTu; i++){
 		kichThuoc[i] = strlen(b[i]);
 	}
 		//Thuật toán tìm chỉ số lớn nhất của mảng
 	int max_index = 0;
-	for(int i = 0; i <= soTu; i++){
+	for(int i = 0; i < soTu; i++){
 		if(kichThuoc[max_index] < kichThuoc[i]){
 			max_index = i;
 		}
