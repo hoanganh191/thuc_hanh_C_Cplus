@@ -20,7 +20,7 @@ int main(){
 	printf("\nNhap vao ky tu muon dem: ");
 	scanf("%c",&check);
 	int dem = 0;
-	for(int i = 0; i < strlen(text) - 1 ; i++){
+	for(int i = 0; i < strlen(text) ; i++){
 		if(text[i] == check){
 			dem++;
 		}
