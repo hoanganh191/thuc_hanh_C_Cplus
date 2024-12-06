@@ -22,7 +22,7 @@ namespace Tuan6
         private void Load_lophoc()
         {
             //B1 : ket noi DB
-            if (con.State == ConnectionState.Open) con.Open();
+            if (con.State == ConnectionState.Closed) con.Open();
 
             //B2: tao doi tuong commad de thuc hien cau lenh sql
             string sql = "Select * From Lophoc";
@@ -56,9 +56,104 @@ namespace Tuan6
 
         }
 
+        private void Load_sinhvien(string maSV, string gioiTinh, string hoTen, string Malop)
+        {
+            if (con.State == ConnectionState.Closed) con.Open();
+
+            
+
+            //Tao doi tuong commad de thuc thi cau lenh
+            string sql = "select Sinhvien.*,Tenlop from Sinhvien,Lophoc " +
+            "where Sinhvien.Malop=Lophoc.Malop and " +
+            "Masv like '%'+@masv+'%' and Hoten like '%'+@hoten+'%' and " +
+            "Gioitinh like '%'+@gioitinh+'%' and " +
+            "Sinhvien.Malop like '%'+@malop+'%'";
+
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.Add("@masv", SqlDbType.NVarChar, 50).Value = maSV;
+            cmd.Parameters.Add("@hoten", SqlDbType.NVarChar, 100).Value = hoTen;
+            cmd.Parameters.Add("@malop", SqlDbType.NVarChar,50).Value = Malop;
+            cmd.Parameters.Add("@gioitinh", SqlDbType.NVarChar, 50).Value = gioiTinh;
+
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataTable tb = new DataTable();
+            da.Fill(tb);
+            cmd.Dispose();
+            con.Close();
+
+            dgvSinhvien.DataSource = tb;
+            dgvSinhvien.Refresh();
+
+
+        }
+
         private void Capnhatsinhvien_Load(object sender, EventArgs e)
         {
             Load_lophoc();
+            Load_sinhvien("", "", "", "");
+
+        }
+
+        private void btnLuu_Click(object sender, EventArgs e)
+        {
+            string msv = txtMasinhvien.Text.Trim();
+            string ht = txtHoten_cn.Text.Trim();
+            string gt = cbGioitinh_cn.SelectedItem.ToString();
+            DateTime ngs = dtNgaySinh.Value;
+            string ml = cboLop.SelectedValue.ToString(); //Lay du lieu tu Datba base thi dung Value
+            string dt = txtDienthoai_cn.Text.Trim();
+            string dc = txtDiachi.Text.Trim();
+
+            //B2 ket noi DB
+            if (con.State == ConnectionState.Closed) con.Open();
+
+            //B3 them commad de thuc thi cau lenh sql
+            string sql = "Insert Sinhvien Values(@masv,@hoten,@ngaysinh,@gioitinh,@malop,@sdt,@diachi)";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.Add("@masv", SqlDbType.NVarChar, 50).Value = msv;
+            cmd.Parameters.Add("@hoten",SqlDbType.NVarChar,100).Value = ht;
+            cmd.Parameters.Add("@ngaysinh",SqlDbType.Date).Value = ngs;
+            cmd.Parameters.Add("@gioitinh", SqlDbType.NVarChar, 50).Value = gt;
+            cmd.Parameters.Add("@malop", SqlDbType.NVarChar, 50).Value = ml;
+            cmd.Parameters.Add("@sdt", SqlDbType.NVarChar, 50).Value = dt;
+            cmd.Parameters.Add("@diachi", SqlDbType.NVarChar, 200).Value = dc;
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            con.Close();
+
+            MessageBox.Show("Them moi thanh cong");
+            Load_sinhvien("", "", "", "");
+            
+
+        }
+
+        private void dgvSinhvien_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int i = e.RowIndex;
+            txtMasinhvien.Text = dgvSinhvien.Rows[i].Cells[0].Value.ToString();
+            txtHoten_cn.Text = dgvSinhvien.Rows[i].Cells[1].Value.ToString();
+            dtNgaySinh.Value = DateTime.Parse(dgvSinhvien.Rows[i].Cells[2].Value.ToString());
+            cbGioitinh_cn.SelectedItem = dgvSinhvien.Rows[i].Cells[3].Value.ToString();
+            cboLop.SelectedValue = dgvSinhvien.Rows[i].Cells[4].Value.ToString() ;
+            txtDienthoai_cn.Text = dgvSinhvien.Rows[i].Cells["Dienthoai"].Value.ToString();
+            txtDiachi.Text = dgvSinhvien.Rows[i].Cells["Diachi"].Value.ToString();
+            txtMasinhvien.Enabled = false;
+        }
+
+        private void btnTimkiem_Click(object sender, EventArgs e)
+        {
+            //Lay du lieu tu cac control dua vao bien
+            string msv = txtMasinhvien_tk.Text.Trim();
+            string ht = txtHoten_tk.Text.Trim();
+            string gt;
+            //Truong hop de gioi tinh trong
+            if (cbGioitinh_tk.SelectedItem == null) gt = "";
+            else gt = cbGioitinh_tk.SelectedItem.ToString();
+
+            string ml = cboLop_tk.SelectedValue.ToString();
+            //Tim kiem
+            Load_sinhvien(msv,ht,gt,ml);
 
         }
     }
