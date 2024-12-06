@@ -156,5 +156,10 @@ namespace Tuan6
             Load_sinhvien(msv,ht,gt,ml);
 
         }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
