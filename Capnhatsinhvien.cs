@@ -214,7 +214,7 @@ namespace Tuan6
             }
          
             Load_sinhvien("", "", "", ""); //Load lai bang DataGriview
-     }
+      }
 
      //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut Reset tren desgin de khoi tao ham
         private void btnReset_Click(object sender, EventArgs e)
