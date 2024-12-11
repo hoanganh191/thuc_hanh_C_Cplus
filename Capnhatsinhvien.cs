@@ -157,9 +157,76 @@ namespace Tuan6
 
         }
 
+        //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut sua tren desgin de khoi tao ham
         private void btnSua_Click(object sender, EventArgs e)
         {
+            string msv = txtMasinhvien.Text.Trim();
+            string ht = txtHoten_cn.Text.Trim();
+            string gt = cbGioitinh_cn.SelectedItem.ToString();
+            DateTime ngs = dtNgaySinh.Value;
+            string ml = cboLop.SelectedValue.ToString(); //Lay du lieu tu Datba base thi dung Value
+            string dt = txtDienthoai_cn.Text.Trim();
+            string dc = txtDiachi.Text.Trim();
+
+            //B2 ket noi DB
+            if (con.State == ConnectionState.Closed) con.Open();
+
+            //B3 Tao sql Command
+            string sql = "Update Sinhvien SET Hoten = @hoten , Ngaysinh = @ngaysinh , Gioitinh = @gioitinh, Malop = @malop, " +
+                         " Dienthoai = @sdt , Diachi = @diachi Where Masv = @masv ";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.Add("@masv", SqlDbType.NVarChar, 50).Value = msv;
+            cmd.Parameters.Add("@hoten", SqlDbType.NVarChar, 100).Value = ht;
+            cmd.Parameters.Add("@ngaysinh", SqlDbType.Date).Value = ngs;
+            cmd.Parameters.Add("@gioitinh", SqlDbType.NVarChar, 50).Value = gt;
+            cmd.Parameters.Add("@malop", SqlDbType.NVarChar, 50).Value = ml;
+            cmd.Parameters.Add("@sdt", SqlDbType.NVarChar, 50).Value = dt;
+            cmd.Parameters.Add("@diachi", SqlDbType.NVarChar, 200).Value = dc;
+
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            con.Close();
+            MessageBox.Show("Sua thanh cong");
+            Load_sinhvien("", "", "", "");
+        }
+
+        //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut xoa tren desgin de khoi tao ham
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            //Hien ra thong bao muon xoa va luu gia tri nguoi dung chon yes hay no
+            DialogResult res = MessageBox.Show("Ban co muon xoa hay khong","Canh bao",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (res == DialogResult.Yes) //Neu nguoi dung chon yes
+            {
+                string msv = txtMasinhvien.Text.Trim(); //Lay ma sinh vien tu textBox
+
+                if (con.State == ConnectionState.Closed) con.Open(); //Mo cong ket noi CSDL
+
+                string sql = "Delete From Sinhvien Where Masv = @masv"; //Cau lenh sql
+
+                //Khoi tao Sql Command
+                SqlCommand cmd = new SqlCommand(sql, con); 
+
+                cmd.Parameters.Add("@masv", SqlDbType.NVarChar, 50).Value = msv;
+                //thuc thi cau lenh , giai phong command va dong cong bo nho
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+                con.Close();
+            }
+         
+            Load_sinhvien("", "", "", ""); //Load lai bang DataGriview
+     }
+
+     //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut Reset tren desgin de khoi tao ham
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            txtMasinhvien.Enabled = true; //Mo che do nhap ma sinh vien de them moi
+            //Gan cac gia tri la trong de sau nhap du lieu sinh vien moi
+            txtMasinhvien.Text = "";
+            txtHoten_cn.Text = "";
+            txtDienthoai_cn.Text = "";
+            txtDiachi.Text = "";
 
         }
+
     }
 }
