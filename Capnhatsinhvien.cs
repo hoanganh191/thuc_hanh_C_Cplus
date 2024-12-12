@@ -153,7 +153,7 @@ namespace Tuan6
 
             string ml = cboLop_tk.SelectedValue.ToString();
             //Tim kiem
-            Load_sinhvien(msv,ht,gt,ml);
+            Load_sinhvien(msv,gt,ht,ml);
 
         }
 
