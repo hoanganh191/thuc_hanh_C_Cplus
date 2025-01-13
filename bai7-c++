@@ -1,0 +1,92 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class ThiSinh {
+private:
+    string maThiSinh;
+    string hoTen;
+    float diemToan;
+    float diemLy;
+    float diemHoa;
+
+public:
+    // Phương thức nhập thông tin thí sinh
+    void nhap() {
+        cout << "Nhap ma thi sinh: ";
+        cin >> maThiSinh;
+        cin.ignore();  // Để tránh lỗi khi nhập tên
+        cout << "Nhap ho ten: ";
+        getline(cin, hoTen);
+        cout << "Nhap diem Toan: ";
+        cin >> diemToan;
+        cout << "Nhap diem Ly: ";
+        cin >> diemLy;
+        cout << "Nhap diem Hoa: ";
+        cin >> diemHoa;
+    }
+
+    // Phương thức xuất thông tin thí sinh
+    void xuat() {
+        cout << "Ma thi sinh: " << maThiSinh << endl;
+        cout << "Ho ten: " << hoTen << endl;
+        cout << "Diem Toan: " << diemToan << endl;
+        cout << "Diem Ly: " << diemLy << endl;
+        cout << "Diem Hoa: " << diemHoa << endl;
+    }
+
+    // Phương thức tính tổng điểm
+    float tinhTongDiem() {
+        return diemToan + diemLy + diemHoa;
+    }
+
+    // Phương thức kiểm tra điểm hợp lệ
+    bool kiemTraDiem() {
+        return diemToan >= 2 && diemLy >= 2 && diemHoa >= 2;
+    }
+
+    // Getter để lấy tổng điểm
+    float getTongDiem() {
+        return tinhTongDiem();
+    }
+};
+
+int main() {
+    int n;
+    cout << "Nhap so luong thi sinh: ";
+    cin >> n;
+
+    // Cấp phát động cho mảng thí sinh
+    ThiSinh* thiSinhArray = new ThiSinh[n];
+
+    // Nhập thông tin n thí sinh
+    for (int i = 0; i < n; i++) {
+        cout << "\nNhap thong tin thi sinh thu " << i + 1 << endl;
+        thiSinhArray[i].nhap();
+    }
+
+    // Tìm thí sinh có tổng điểm cao nhất
+    int maxIndex = 0;
+    for (int i = 1; i < n; i++) {
+        if (thiSinhArray[i].getTongDiem() > thiSinhArray[maxIndex].getTongDiem()) {
+            maxIndex = i;
+        }
+    }
+
+    // In ra thí sinh có tổng điểm cao nhất
+    cout << "\nThong tin thi sinh co tong diem cao nhat:\n";
+    thiSinhArray[maxIndex].xuat();
+
+    // In ra thông tin các thí sinh có tổng điểm từ 21 trở lên và không có môn nào dưới 2
+    cout << "\nThong tin thi sinh co tong diem >= 21 va diem mon nao cung >= 2:\n";
+    for (int i = 0; i < n; i++) {
+        if (thiSinhArray[i].getTongDiem() >= 21 && thiSinhArray[i].kiemTraDiem()) {
+            thiSinhArray[i].xuat();
+        }
+    }
+
+    // Giải phóng bộ nhớ
+    delete[] thiSinhArray;
+
+    return 0;
+}
