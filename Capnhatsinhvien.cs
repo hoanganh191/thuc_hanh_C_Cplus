@@ -19,7 +19,7 @@ namespace Tuan6
             InitializeComponent();
         }
 
-        private void Load_lophoc() //Ham khong can tham chieu ( ham tu viet k can chi vao giao dien )
+        private void Load_lophoc()
         {
             //B1 : ket noi DB
             if (con.State == ConnectionState.Closed) con.Open();
@@ -56,7 +56,7 @@ namespace Tuan6
 
         }
 
-        private void Load_sinhvien(string maSV, string gioiTinh, string hoTen, string Malop) //Ham tu viet
+        private void Load_sinhvien(string maSV, string gioiTinh, string hoTen, string Malop)
         {
             if (con.State == ConnectionState.Closed) con.Open();
 
@@ -87,15 +87,15 @@ namespace Tuan6
 
 
         }
-        //Ham nay can tham chieu giao dien, an dup vao giao dien (Form) de co ham nay 
+
         private void Capnhatsinhvien_Load(object sender, EventArgs e)
         {
             Load_lophoc();
             Load_sinhvien("", "", "", "");
 
         }
-        
-        private void btnLuu_Click(object sender, EventArgs e) //Ham nay an dup vao nut luu o giao dien
+
+        private void btnLuu_Click(object sender, EventArgs e)
         {
             string msv = txtMasinhvien.Text.Trim();
             string ht = txtHoten_cn.Text.Trim();
@@ -127,7 +127,7 @@ namespace Tuan6
             
 
         }
-        // ham nay chinh su kien event Cell Click cua DataGripview
+
         private void dgvSinhvien_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int i = e.RowIndex;
@@ -141,7 +141,7 @@ namespace Tuan6
             txtMasinhvien.Enabled = false;
         }
 
-        private void btnTimkiem_Click(object sender, EventArgs e) //Ham nay la an dup 2 lan vao nut tim kiem
+        private void btnTimkiem_Click(object sender, EventArgs e)
         {
             //Lay du lieu tu cac control dua vao bien
             string msv = txtMasinhvien_tk.Text.Trim();
@@ -190,6 +190,7 @@ namespace Tuan6
             Load_sinhvien("", "", "", "");
         }
 
+
         //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut xoa tren desgin de khoi tao ham
         private void btnXoa_Click(object sender, EventArgs e)
         {
@@ -212,11 +213,14 @@ namespace Tuan6
                 cmd.Dispose();
                 con.Close();
             }
-         
-            Load_sinhvien("", "", "", ""); //Load lai bang DataGriview
-       }
+            
+           
 
-     //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut Reset tren desgin de khoi tao ham
+            Load_sinhvien("", "", "", ""); //Load lai bang DataGriview
+        }
+
+
+        //Kich hoat event ( su kien nay) bang cach an dup 2 lan vao nut Reset tren desgin de khoi tao ham
         private void btnReset_Click(object sender, EventArgs e)
         {
             txtMasinhvien.Enabled = true; //Mo che do nhap ma sinh vien de them moi
@@ -225,8 +229,12 @@ namespace Tuan6
             txtHoten_cn.Text = "";
             txtDienthoai_cn.Text = "";
             txtDiachi.Text = "";
-
+            cboLop.SelectedIndex = 0;
         }
 
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
