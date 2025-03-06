@@ -91,5 +91,69 @@ namespace Tuan6
             txttenloai.Text = dgvsach.Rows[hangdangchon].Cells[1].Value.ToString();
             txtmota.Text = dgvsach.Rows[hangdangchon].Cells[2].Value.ToString();
         }
+
+        private void btnxoa_Click(object sender, EventArgs e)
+        {
+            if(txtmaloai.Text=="")
+            {
+                MessageBox.Show("Chua chon o"); return;
+            }
+        string maloai = txtmaloai.Text;
+            if(con.State == ConnectionState.Closed)  con.Open();
+            string sql = "delete from sach where Maloai=@maloai";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.Add("@maloai", SqlDbType.NVarChar, 50).Value = maloai;
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            con.Close();
+            MessageBox.Show("xoa thanh cong");
+            loaddgv();
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            if(txtmaloai.Text=="")
+            {
+                MessageBox.Show("Chua chon o");
+                return;
+            }
+            string maloai= txtmaloai.Text;
+            string tenloai= txttenloai.Text;
+            string mota= txtmota.Text;
+            if (con.State == ConnectionState.Closed) con.Open();
+            string sql = "update sach set Tenloai=@tenloai,Mota=@tenloai where Maloai=@maloai";
+            SqlCommand cmd= new SqlCommand(sql, con);
+            cmd.Parameters.Add("@maloai",SqlDbType.NVarChar,50).Value = maloai;
+            cmd.Parameters.Add("@tenloai",SqlDbType.NVarChar,50).Value= tenloai;
+            cmd.Parameters.Add("@mota",SqlDbType.NVarChar,50).Value= mota;
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            con.Close();
+            MessageBox.Show("sua thanh cong");
+            loaddgv();
+        }
+
+        private void btntimkiem_Click(object sender, EventArgs e)
+        {
+            string maloai = txtmaloai.Text;
+            string tenloai = txttenloai.Text;
+            string mota= txtmota.Text;
+            if(con.State == ConnectionState.Closed)
+                con.Open();
+            string sql = "select * from sach where Maloai like @maloai and Tenloai like @tenloai and Mota like @mota";
+            SqlCommand cmd = new SqlCommand(sql,con);
+            cmd.Parameters.Add("@maloai",SqlDbType.NVarChar,50).Value="%"+maloai+"%";
+            cmd.Parameters.Add("@tenloai", SqlDbType.NVarChar, 50).Value = "%"+tenloai+"%";
+            cmd.Parameters.Add("@mota",SqlDbType.NVarChar,50).Value="%"+mota+"%";
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            dgvsach.DataSource= dt;
+            dgvsach.Refresh();
+            cmd.Dispose();
+          con.Close();
+        }
     }
+
+
 }
